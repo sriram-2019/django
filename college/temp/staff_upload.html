@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Staff upload</title>
+<style>
+body {
+font-family: Arial, sans-serif;
+margin: 0;
+padding: 0;
+}
+
+h1 {
+background-color: #336699;
+color: white;
+padding: 20px;
+text-align: center;
+margin: 0;
+}
+
+form {
+margin: 20px;
+padding: 20px;
+border: 1px solid #ccc;
+border-radius: 5px;
+}
+
+label {
+display: block;
+margin-bottom: 10px;
+font-weight: bold;
+}
+
+input[type="text"],
+input[type="date"],
+input[type="file"] {
+display: block;
+margin-bottom: 20px;
+padding: 10px;
+border-radius: 5px;
+border: 1px solid #ccc;
+width: 100%;
+box-sizing: border-box;
+font-size: 16px;
+}
+
+select {
+display: block;
+margin-bottom: 20px;
+padding: 10px;
+border-radius: 5px;
+border: 1px solid #ccc;
+width: 100%;
+box-sizing: border-box;
+font-size: 16px;
+}
+
+input[type="submit"] {
+background-color: #336699;
+color: white;
+padding: 10px 20px;
+border: none;
+border-radius: 5px;
+font-size: 16px;
+cursor: pointer;
+}
+
+input[type="submit"]:hover {
+background-color: #265580;
+}
+</style>
+</head>
+<body>
+<h1>Upload !</h1>
+
+<form method="POST">
+    {% csrf_token %}
+<label for="Title">Event_Title:</label>
+<select id="names" name="names">
+<option value="paper">Paper</option>
+<option value="project">Project</option>
+<option value="ftp">FTP</option>
+<option value="seminar">Seminar</option>
+<option value="webinar">Webinar</option>
+<option value="workshop">Workshop</option>
+</select>
+<label for="journal" id="journal_label">Name of the journal</label>
+<input type="text" name="journal" required>
+<label for="title" id="titel">Event_title :</label>
+<input type="text" name="title" required>
+
+<label for="host">Name of the host/college:</label>
+<input type="text" id="host" name="host" >
+
+<label for="from_date">From date:</label>
+<input type="date" id="from_date" name="from_date" required>
+
+<label for="to_date">To date:</label>
+<input type="date" id="to_date" name="to_date" required>
+
+<label for="file_input">File input:</label>
+<input type="file" id="file_inputs" name="file_input" required>
+
+<input type="submit" value="Submit" name="sub" id="submited">
+</form>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+       
+       
+  $(document).ready(function() {
+    var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+                $.ajaxSetup({
+                beforeSend: function(xhr, settings) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+                });
+    $('#names').change(function() {
+      var selectedValue = $(this).val();
+      if (selectedValue == 'paper') {
+        $('#journal_label').text('Name of the journal:');
+      } else if (selectedValue == 'project') {
+        $('#journal_label').text('Name of the funding agency:');
+      } else if (selectedValue == 'ftp') {
+        $('#journal_label').text('Name of the conference:');
+      } else if (selectedValue == 'seminar') {
+        $('#journal_label').text('Presented/submitted:');
+      } else if (selectedValue == 'webinar') {
+        $('#journal_label').text('Presnted/submitted:');
+      } else if (selectedValue == 'workshop') {
+        $('#journal_label').text('presented/submitted');
+      }
+    });
+    $("#submited").click(function(event){
+      event.preventDefault();
+      var slected=document.getElementsByName("names")[0];
+      var sel=slected.value;
+      var event_name=$("input[name='journal']").val();
+      var event_title=$("input[name='title']").val();
+      var event_host=$("input[name='host']").val();
+      var from_date=$("input[name='from_date']").val();
+      var to_date=$("input[name='to_date']").val();
+      var file=$("#file_inputs").prop('files')[0];
+      if(event_name==''||event_title==''||event_host==''||from_date==''||to_date==''||file==undefined){
+        alert("please fill all the details");
+      }
+      else{
+        formdata=new FormData();
+        formdata.append('names',sel);
+        formdata.append('journal',event_name);
+        formdata.append('title',event_title);
+        formdata.append('host',event_host);
+        formdata.append('from_date',from_date);
+        formdata.append('to_date',to_date);
+        formdata.append('file_input',file);
+        $.ajax({
+          type:"POST",
+          data:formdata,
+          url:"/staff_ups/",
+          contentType:false,
+          processData:false,
+          success:function(data){
+            if(data){
+              alert(data.message)
+            }
+          },
+          error: function(){
+            alert("please contact admin");
+          }
+        });
+      }
+    });
+  });
+</script>
+
+</script>
+
+
+</body>
+</html>

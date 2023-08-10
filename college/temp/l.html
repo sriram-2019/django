@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login form</title>
+    <link rel="stylesheet" type="text/css" href="{%  static 'C:/Users/srira/OneDrive/Desktop/college/css/login_design.css' %}"/>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</head>
+<body>
+    <div class="container">
+        <form class="form" method="POST" autocomplete="off">
+            {% csrf_token %}
+            <div class="inputField">
+                <h1>Staff login</h1>
+                <input type="text" placeholder="Enter instituition-id" required/>
+                <input type="password" placeholder="Enter password" required/>
+            </div>
+            <div class="btn">
+                <input type="submit" value="Log-in" name="login"/>
+                <a href="#"></a><input type="submit" value="sign-up" name="staff_sub"/></a>
+            </div>
+        </form>
+        <form action="#" class="form" method="POST" autocomplete="off">
+            {% csrf_token %}
+            <div class="inputField">
+                <h1>Students login</h1>
+                <input type="text" placeholder="Enter roll_no"  name="student_name"/>
+                <input type="password" placeholder="Enter password" name="student_password" />
+            </div>
+            <div class="btn">
+                <input type="submit" value="Log-in" name="stu_log" id="student" />
+                <input type="submit" value="sign-up" name="sign_up"/>
+            </div>
+        </form>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+         $(document).ready(function () {
+              var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+                $.ajaxSetup({
+                beforeSend: function(xhr, settings) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+                });
+        $('#student').click(function (event) {
+            event.preventDefault();
+            var formData = $(this).serialize();
+            $.ajax({
+            url: "/my_view/",
+            type: "POST",
+            dataType: "json",
+            data: $('form').serialize(),
+            success: function(data) {
+                if(data.message=='success'){
+                    window.location.href = 'Button.html';
+                }else{
+                    alert(data.message);
+                }
+                
+                },
+                    error: function(xhr, textStatus, errorThrown) {
+                        console.log("Error: " + errorThrown);
+                    }
+});
+
+            
+        });
+    });
+    </script>
+</body>
+</html>

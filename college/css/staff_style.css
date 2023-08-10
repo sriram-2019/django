@@ -1,0 +1,45 @@
+
+table{
+    margin:20px auto;
+    padding:50px;
+    border:8px ridge grey;
+    background-color: blanchedalmond;
+}
+table td{
+   padding:10px;
+}
+label{
+    font-weight:bold;
+    font-size:1.25rem;
+    font-family:Arial, Helvetica, sans-serif;
+}
+input[type="text"],input[type="password"],input[type="email"],select{
+    padding:7px;
+    width:95%;
+    font-size:1.25rem;
+    border-radius: 10px;
+    outline: none;
+    border:2px solid rgba(8, 134, 143, 0.89);
+}
+input[type="submit"],input[type="reset"]{
+    padding:8px;
+    font-weight: bolder;
+    border-radius: 10px;
+    background-color: chocolate;
+    border:none;
+    color:white;
+    font-size:1.25em;
+}
+input[type="submit"]:hover,input[type="reset"]:hover{
+    cursor:pointer;
+    background-color: coral;
+    transform:translateY(-5px);
+    transition-duration: .5s;
+}
+input[type="submit"]:focus,input[type="reset"]:focus{
+    cursor:pointer;
+    background-color: rgb(107, 62, 46);
+}
+input[type="checkbox"]:hover{
+    background-color:darkorange;
+}
